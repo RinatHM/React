@@ -1,11 +1,12 @@
+// src/store/store.js
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-import usersSaga from './sagas/usersSaga';
-import usersReducer from './usersSlice'; // Создадим дальше
+import usersReducer from '../features/users/usersSlice';
+import usersSaga from '../features/users/usersSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     users: usersReducer
   },
@@ -14,6 +15,8 @@ export const store = configureStore({
 });
 
 sagaMiddleware.run(usersSaga);
+console.log('Initial store state:', store.getState());
+export default store;
 
 
 // import { configureStore } from '@reduxjs/toolkit';

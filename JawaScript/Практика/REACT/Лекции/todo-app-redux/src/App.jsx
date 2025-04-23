@@ -1,13 +1,97 @@
-import UsersList from "./sagas/UsersList";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsersRequest } from './features/users/usersSlice';
 
-function App() {
+const UserCard = ({ user }) => (
+  <div style={styles.card}>
+    <h3>{user.name}</h3>
+    <p>Email: {user.email}</p>
+    <p>Phone: {user.phone}</p>
+    <p>Company: {user.company.name}</p>
+    <a href={`https://${user.website}`} target="_blank" rel="noopener noreferrer">
+      Website
+    </a>
+  </div>
+);
+
+export default function App() {
+  const dispatch = useDispatch();
+  const { data: users, loading, error } = useSelector(state => state.users);
+
+  useEffect(() => {
+    dispatch(fetchUsersRequest());
+  }, [dispatch]);
+
+  if (loading) return <div style={styles.loading}>Loading...</div>;
+  if (error) return <div style={styles.error}>Error: {error}</div>;
+
   return (
-    <div>
-      <h1>Users List</h1>
-      <UsersList />
+    <div style={styles.container}>
+      <h1 style={styles.title}>User Management</h1>
+      <div style={styles.grid}>
+        {users.map(user => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </div>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    padding: '20px',
+    fontFamily: 'Arial, sans-serif'
+  },
+  title: {
+    color: '#333',
+    textAlign: 'center'
+  },
+  grid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+    gap: '20px',
+    padding: '20px 0'
+  },
+  card: {
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    padding: '15px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    transition: 'transform 0.2s',
+    ':hover': {
+      transform: 'translateY(-5px)'
+    }
+  },
+  loading: {
+    textAlign: 'center',
+    fontSize: '1.5rem',
+    margin: '50px'
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    fontSize: '1.2rem'
+  }
+};
+
+// import React from 'react';
+// import UsersList from './components/UsersList';  // Исправленный путь
+
+// const App = () => {
+//   return (
+//     <div className="app">
+//       <header>
+//         <h1>User Management System</h1>
+//       </header>
+//       <main>
+//         <UsersList />
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default App;
+
 
 
 // import React from 'react';

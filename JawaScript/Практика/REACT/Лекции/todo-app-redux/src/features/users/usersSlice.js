@@ -1,3 +1,4 @@
+// src/features/users/usersSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -15,8 +16,9 @@ const usersSlice = createSlice({
       state.error = null;
     },
     fetchUsersSuccess: (state, action) => {
+      console.log('Reducer: saving data', action.payload.length); // Добавьте лог
       state.loading = false;
-      state.data = action.payload;
+      state.data = action.payload; // Важно: сохраняем данные
     },
     fetchUsersFailure: (state, action) => {
       state.loading = false;
@@ -26,9 +28,9 @@ const usersSlice = createSlice({
 });
 
 export const { 
-  fetchUsersRequest, 
-  fetchUsersSuccess, 
-  fetchUsersFailure 
+  fetchUsersRequest,
+  fetchUsersSuccess,
+  fetchUsersFailure
 } = usersSlice.actions;
 
 export default usersSlice.reducer;
