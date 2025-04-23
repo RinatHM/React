@@ -1,0 +1,7 @@
+/* CurrentTime.css */
+.current-time {
+    font-size: 34px; /* Увеличиваем размер шрифта */
+    color: hwb(6 17% 11%); /* Цвет текста */
+    text-align: center; /* Выравнивание по центру */
+    margin: 20px 0; /* Отступ сверху и снизу */
+}
