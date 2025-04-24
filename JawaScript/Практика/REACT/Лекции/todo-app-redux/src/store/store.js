@@ -1,22 +1,61 @@
 // src/store/store.js
 import { configureStore } from '@reduxjs/toolkit';
-import createSagaMiddleware from 'redux-saga';
-import usersReducer from '../features/users/usersSlice';
-import usersSaga from '../features/users/usersSaga';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import tasksReducer from '../features/tasks/tasksSlice';
 
-const sagaMiddleware = createSagaMiddleware();
+const persistConfig = {
+  key: 'root',
+  storage,
+};
 
-const store = configureStore({
+const persistedReducer = persistReducer(persistConfig, tasksReducer);
+
+export const store = configureStore({
   reducer: {
-    users: usersReducer
+    tasks: persistedReducer,
   },
-  middleware: (getDefaultMiddleware) => 
-    getDefaultMiddleware().concat(sagaMiddleware)
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
-sagaMiddleware.run(usersSaga);
-console.log('Initial store state:', store.getState());
-export default store;
+export const persistor = persistStore(store);
+
+
+
+
+// import { configureStore } from '@reduxjs/toolkit';
+// import tasksReducer from '../features/tasks/tasksSlice';
+
+// export const store = configureStore({
+//   reducer: {
+//     tasks: tasksReducer,
+//   },
+// });
+
+
+
+
+// import { configureStore } from '@reduxjs/toolkit';
+// import createSagaMiddleware from 'redux-saga';
+// import usersReducer from '../features/users/usersSlice';
+// import usersSaga from '../features/users/usersSaga';
+
+// const sagaMiddleware = createSagaMiddleware();
+
+// const store = configureStore({
+//   reducer: {
+//     users: usersReducer
+//   },
+//   middleware: (getDefaultMiddleware) => 
+//     getDefaultMiddleware().concat(sagaMiddleware)
+// });
+
+// sagaMiddleware.run(usersSaga);
+// console.log('Initial store state:', store.getState());
+// export default store;
 
 
 // import { configureStore } from '@reduxjs/toolkit';
